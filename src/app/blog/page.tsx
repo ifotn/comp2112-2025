@@ -13,8 +13,8 @@ export default async function Blog() {
 
     // display a page and show the blog post data we received
     return (
-        <main className="p-10">
-            <h1 className="text-3xl">Blog</h1>
+        <main>
+            <h1>Blog</h1>
             <ul className="list-none p-4 space-y-2">
                 {posts.map((post) => (
                     <li key={post.id} className="bg-white p-4 rounded shadow">{post.title}</li>
