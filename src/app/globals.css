@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+/* tailwind conversion by Co-Pilot */
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -75,6 +76,75 @@ button {
 button:hover {
  background-color: #1e40af;
  cursor: pointer;
+}
+
+.inactiveLink:hover { 
+ color: #D1D5DB; 
+}
+
+.activeLink {
+ padding: 0.5rem 0.75rem 0.5rem 0.75rem;
+ color: #FFFFFF;
+ background-color: #2563EB;
+ border-radius: 0.25rem;
+}
+
+nav {
+ background-color: #111827;
+ color: #ffffff;
+ padding: 1rem;
+ display: flex;
+ flex-direction: column;
+}
+
+.brand {
+ font-size: 1.25rem;
+ font-weight: 700;
+ margin-bottom: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  nav {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+ .brand {
+   margin-bottom: 0;
+ }
+
+ .navElements {
+   flex-direction: row;
+   gap: 1rem; /* equivalent to Tailwind's space-x-4 */
+ }
+}
+
+.navElements {
+  display: flex;
+  flex-direction: row;
+}
+
+footer {
+ background-color: #111827;
+ color: #ffffff;
+ padding-top: 1rem;
+ padding-bottom: 1rem;
+ text-align: center;
+ max-width: 100%;
+ margin-left: auto;
+ margin-right: auto;
+}
+
+footer a {
+ color: #9CA3AF;
+ margin-left: 0.5rem;
+ margin-right: 0.5rem;
+ text-decoration: none;
+}
+
+.footer a:hover {
+ color: #FFFFFF;
 }
 
 
