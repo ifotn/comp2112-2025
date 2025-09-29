@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from "react";
+import PageTitle from "./components/PageTitle";
 
 export default function Home() {
   // create a state var to track # of button clicks, defaults to zero
@@ -14,6 +15,7 @@ export default function Home() {
   // every React component must have 1 return to send the JSX to the DOM
   return (
     <main>
+      <PageTitle title="Home" />
       <h1>COMP2112 Class Site</h1>
       <p>This is Rich&apos;s in class site is built with Next.js and is hosted on Vercel.</p>
       <section>
