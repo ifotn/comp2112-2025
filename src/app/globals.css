@@ -147,4 +147,42 @@ footer a {
  color: #FFFFFF;
 }
 
+input, textarea {
+ border: 1px solid;
+ border-color: grey;
+ width: 450px;
+ border-radius: 0.25rem;
+}
+
+input.focus textarea.focus {
+ box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.5);
+}
+
+textarea {
+ height: 300px;
+}
+
+label {
+ width: 200px;
+ display: block;
+}
+
+fieldset {
+ margin-bottom: 10px;
+}
+
+.newLink {
+ color: #2563EB;
+}
+
+.newLink:hover {
+ text-decoration: underline;
+}
+
+.error {
+ color: firebrick;
+ margin: 1rem;
+}
+
+
 
