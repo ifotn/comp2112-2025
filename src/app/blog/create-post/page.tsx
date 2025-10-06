@@ -2,6 +2,7 @@
 
 // import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
 interface PostFormData {
     title: string;
@@ -9,6 +10,9 @@ interface PostFormData {
 }
 
 export default function CreatePost() {
+    // used for redirecting
+    const router = useRouter();
+
     // form input handling.  register: for binding form inputs
     const { register, handleSubmit, formState: { errors, isSubmitSuccessful }} = useForm<PostFormData>();
 
@@ -26,7 +30,7 @@ export default function CreatePost() {
                 body: JSON.stringify({
                     title: data.title,
                     content: data.content,
-                    username: 'rich.freeman@georgiancollege.ca',
+                    username: 'your-email-here@georgiancollege.ca',
                     date: postDate
                 })
             });
@@ -34,6 +38,9 @@ export default function CreatePost() {
             // api response that comes back
             const apiRes: Response = await res.json();
             console.log(apiRes);
+
+            // no error => redirect to blog
+            router.push('/blog');
         }
         catch (error: unknown) {
             console.log(error);

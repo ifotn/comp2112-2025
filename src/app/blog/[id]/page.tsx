@@ -32,7 +32,7 @@ export default async function Post({ params }: { params: { id: string }}) {
         <main>
             <PageTitle title="Blog Post" />
             <h1>{post.title}</h1>
-            <h2>By {post.author} on {post.date}</h2>
+            <h2>By {post.author} on {new Date(post.date).toLocaleDateString()}</h2>
             <article>
                 {post.content}
             </article>
