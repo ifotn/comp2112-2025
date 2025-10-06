@@ -23,10 +23,12 @@ export default function CreatePost() {
                 <fieldset>
                     <label htmlFor="title">Title: *</label>
                     <input {...register("title", { required: "Title is required" })} />
+                    {errors.title && <span className="error">{errors.title.message}</span>}
                 </fieldset>
                 <fieldset>
                     <label htmlFor="content">Content: *</label>
                     <textarea {...register("content", { required: "Content is required" })}></textarea>
+                    {errors.content && <span className="error">{errors.content.message}</span>}
                 </fieldset>
                 <button>Save</button>
             </form>
