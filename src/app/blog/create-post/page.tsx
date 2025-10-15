@@ -10,26 +10,27 @@ interface PostFormData {
     content: string;
 }
 
+// define a handler Event type for the SimpleWysiwyg editor
 interface SimpleWysiwygChangeEvent {
-    target: { 
-        value: string;
+    target: {
+        value: string
     }
 }
 
 export default function CreatePost() {
+    // state var for blog post content
+    const [content, setContent] = useState<string>('');
+
     // used for redirecting
     const router = useRouter();
 
-    // state var to store blog post content
-    const [content, setContent] = useState<string>('');
+    // form input handling.  register: for binding form inputs
+    const { register, handleSubmit, formState: { errors, isSubmitSuccessful }} = useForm<PostFormData>();
 
-    // change handler for rte
+    // rte change event handler
     const handleContentChange = (event: SimpleWysiwygChangeEvent) => {
         setContent(event.target.value);
     }
-
-    // form input handling.  register: for binding form inputs
-    const { register, handleSubmit, formState: { errors, isSubmitSuccessful }} = useForm<PostFormData>();
 
     const onSubmit = async (data: PostFormData) => {
         console.log(`Submitted: ${data}`);
@@ -44,8 +45,8 @@ export default function CreatePost() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     title: data.title,
-                    content: content,  // now includes html markup from rte
-                    username: 'your-email-here@georgiancollege.ca',
+                    content: content,  // now read content from state var which may now include html tags
+                    username: 'rich.freeman@georgiancollege.ca',
                     date: postDate
                 })
             });
@@ -73,8 +74,8 @@ export default function CreatePost() {
                 </fieldset>
                 <fieldset>
                     <label htmlFor="content">Content: *</label>
+                    <SimpleWysiwyg value={content} onChange={handleContentChange} className="rte" />
                     {/* <textarea {...register("content", { required: "Content is required" })}></textarea> */}
-                    <SimpleWysiwyg value={content} className="rte" onChange={handleContentChange} />
                     {errors.content && <span className="error">{errors.content.message}</span>}
                 </fieldset>
                 <button>Save</button>
