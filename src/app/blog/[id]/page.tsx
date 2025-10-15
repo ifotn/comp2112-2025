@@ -1,4 +1,5 @@
 import PageTitle from "@/app/components/PageTitle";
+import { Parser } from "html-to-react";
 
 type Post = {
     title: string;
@@ -34,7 +35,7 @@ export default async function Post({ params }: { params: { id: string }}) {
             <h1>{post.title}</h1>
             <h2>By {post.author} on {new Date(post.date).toLocaleDateString()}</h2>
             <article>
-                {post.content}
+                {Parser().parse(post.content)}
             </article>
         </main>
     );

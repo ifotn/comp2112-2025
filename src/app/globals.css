@@ -147,18 +147,18 @@ footer a {
  color: #FFFFFF;
 }
 
-input, textarea {
+input, textarea, .rte {
  border: 1px solid;
  border-color: grey;
  width: 450px;
  border-radius: 0.25rem;
 }
 
-input.focus textarea.focus {
+input.focus textarea.focus, .rte.focus {
  box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.5);
 }
 
-textarea {
+textarea, .rte {
  height: 300px;
 }
 
