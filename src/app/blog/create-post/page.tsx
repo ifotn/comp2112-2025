@@ -40,7 +40,11 @@ export default function CreatePost() {
             const postDate: string = new Date().toLocaleDateString();
 
             // make POST request to Rich's blog api
-            const res: Response = await fetch('https://vercel-blog-api-eta.vercel.app/api/v1/posts', {
+            //const res: Response = await fetch('https://vercel-blog-api-eta.vercel.app/api/v1/posts', {
+            
+            // use env var for api domain
+            const apiDomain: string = process.env.NEXT_PUBLIC_API_DOMAIN!;
+            const res: Response = await fetch(`${apiDomain}/posts`, {    
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

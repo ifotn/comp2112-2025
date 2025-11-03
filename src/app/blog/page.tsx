@@ -15,7 +15,7 @@ export default async function Blog() {
     //const data: Response = await fetch('https://vercel-blog-api-eta.vercel.app/api/v1/posts');
 
     // now use env var for api domain
-    const apiDomain: string = process.env.API_DOMAIN!;
+    const apiDomain: string = process.env.NEXT_PUBLIC_API_DOMAIN!;
     const data: Response = await fetch(`${apiDomain}/posts`);
 
     // convert API json to array of Post objects (defined above)
