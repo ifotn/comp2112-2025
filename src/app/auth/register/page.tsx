@@ -1,6 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
+import PageTitle from "@/app/components/PageTitle";
 
 interface RegisterFormData {
   username: string;
@@ -21,6 +22,7 @@ export default function Register() {
 
   return (
     <main>
+      <PageTitle title="Register" />
       <h1>Register</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <fieldset>
@@ -34,7 +36,7 @@ export default function Register() {
         </fieldset>
         <fieldset>
           <label>Password:</label>
-          <input
+          <input type="password" 
             {...register("password", { required: "Password is required" })}
           />
           {errors.password && (
@@ -43,7 +45,7 @@ export default function Register() {
         </fieldset>
         <fieldset>
           <label>Confirm Password:</label>
-          <input
+          <input type="password"
             {...register("confirm", {
               required: "Password Confirmation is required",
             })}
