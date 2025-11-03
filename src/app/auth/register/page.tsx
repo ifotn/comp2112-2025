@@ -16,8 +16,39 @@ export default function Register() {
     formState: { errors, isSubmitSuccessful },
   } = useForm<RegisterFormData>();
 
-  const onSubmit = (data: RegisterFormData) => {
-    console.log("Success");
+  const onSubmit = async (data: RegisterFormData) => {
+    if (data.password != data.confirm) {
+      console.log("Passwords do not match");
+    }
+    else {
+      try {
+        // use fetch to POST new user to back-end API
+        const apiDomain: string = process.env.NEXT_PUBLIC_API_DOMAIN!;
+        const response: Response = await fetch(`${apiDomain}/users/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            username: data.username,
+            password: data.password
+          })
+        });
+
+        // check response from POST attempt
+        const apiResponse: Response = await response.json();
+
+        if (apiResponse.ok) {
+          console.log(`Success: ${apiResponse}`);
+        }
+        else {
+          console.log(`Registration Failed: ${apiResponse.text}`);
+        }
+      }
+      catch(error) {
+        console.log(`Registration Error: ${error}`);
+      }     
+    }
   };
 
   return (
@@ -36,8 +67,14 @@ export default function Register() {
         </fieldset>
         <fieldset>
           <label>Password:</label>
-          <input type="password" 
-            {...register("password", { required: "Password is required" })}
+          <input type="password"
+            {...register("password", { 
+              required: "Password is required",
+              minLength: {
+                value: 8,
+                message: "Min 8 characters"
+              }
+            })}
           />
           {errors.password && (
             <span className="error">{errors.password.message}</span>
@@ -48,6 +85,10 @@ export default function Register() {
           <input type="password"
             {...register("confirm", {
               required: "Password Confirmation is required",
+              minLength: {
+                value: 8,
+                message: "Min 8 characters"
+              }
             })}
           />
           {errors.confirm && (
