@@ -4,6 +4,7 @@
 import { useForm } from "react-hook-form";
 import PageTitle from "@/app/components/PageTitle";
 import { useState } from "react";
+import { useCounter } from "@/app/context/GlobalContext";
 
 type LoginForm = {
     username: string;
@@ -19,6 +20,9 @@ export default function Login() {
         handleSubmit, 
         formState: { errors, isSubmitting } 
     } = useForm<LoginForm>();
+
+    // global context so we can set the username on login success
+    const { setUsername } = useCounter();
 
     const onSubmit = async (data: LoginForm) => {
         //setMessage('Logging in...')
@@ -37,6 +41,7 @@ export default function Login() {
             // evaluate login attempt response
             if (response.ok) {
                 console.log(response.json());
+                setUsername(data.username);  // set username globally from form value if logged in
             }
             else {
                 setMessage('Invalid Login');
