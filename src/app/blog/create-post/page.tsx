@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import SimpleWysiwyg from 'react-simple-wysiwyg';
+import { useCounter } from "@/app/context/GlobalContext";
 
 interface PostFormData {
     title: string;
@@ -23,6 +24,9 @@ export default function CreatePost() {
 
     // used for redirecting
     const router = useRouter();
+
+    // access global username to automatically set it for new blog post
+    const { username } = useCounter();
 
     // form input handling.  register: for binding form inputs
     const { register, handleSubmit, formState: { errors, isSubmitSuccessful }} = useForm<PostFormData>();
@@ -52,9 +56,10 @@ export default function CreatePost() {
                 body: JSON.stringify({
                     title: data.title,
                     content: content,  // now read content from state var which may now include html tags
-                    username: 'rich.freeman@georgiancollege.ca',
+                    author: username,
                     date: postDate
-                })
+                }),
+                credentials: 'include' // send jwt for verification to api
             });
 
             // api response that comes back

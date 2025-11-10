@@ -1,10 +1,10 @@
 "use client";
 
-
 import { useForm } from "react-hook-form";
 import PageTitle from "@/app/components/PageTitle";
 import { useState } from "react";
 import { useCounter } from "@/app/context/GlobalContext";
+import { useRouter } from "next/navigation";
 
 type LoginForm = {
     username: string;
@@ -12,7 +12,6 @@ type LoginForm = {
 }
 
 export default function Login() {
-    
     //state variable with message to display to user
     const [message, setMessage] = useState('Please enter your credentials')
     const { 
@@ -23,6 +22,9 @@ export default function Login() {
 
     // global context so we can set the username on login success
     const { setUsername } = useCounter();
+
+    // router to redirect
+    const router = useRouter();
 
     const onSubmit = async (data: LoginForm) => {
         //setMessage('Logging in...')
@@ -42,6 +44,7 @@ export default function Login() {
             if (response.ok) {
                 console.log(response.json());
                 setUsername(data.username);  // set username globally from form value if logged in
+                router.push('/blog'); // redirect
             }
             else {
                 setMessage('Invalid Login');
@@ -56,10 +59,8 @@ export default function Login() {
     return (
         <main>
             <PageTitle title="Login"/>
-
             <h1>Login</h1>
-
-            <div>{message}</div>
+            <h4>{message}</h4>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <fieldset>
                     <label>Username:</label>
