@@ -20,10 +20,34 @@ export default function Login() {
         formState: { errors, isSubmitting } 
     } = useForm<LoginForm>();
 
-    const onSubmit = (data: LoginForm) => {
-        setMessage('Logging in...')
+    const onSubmit = async (data: LoginForm) => {
+        //setMessage('Logging in...')
+        const apiDomain: string = process.env.NEXT_PUBLIC_API_DOMAIN!;
+
+        try {
+            const response: Response = await fetch(`${apiDomain}/users/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    username: data.username,
+                    password: data.password
+                })
+            });
+
+            // evaluate login attempt response
+            if (response.ok) {
+                console.log(response.json());
+            }
+            else {
+                setMessage('Invalid Login');
+                console.log(response.json());
+            }
+        }
+        catch (error) {
+            console.log(`Login Error: ${error}`);
+        }
     };
-    
+
     return (
         <main>
             <PageTitle title="Login"/>
