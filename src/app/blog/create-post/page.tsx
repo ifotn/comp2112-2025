@@ -33,7 +33,8 @@ export default function CreatePost() {
     }
 
     const onSubmit = async (data: PostFormData) => {
-        console.log(`Submitted: ${data}`);
+        //console.log(`username: ${username}`);
+        //console.log(`Submitted: ${data}`);
 
         try {
             // get current timestamp
@@ -45,6 +46,7 @@ export default function CreatePost() {
             // use env var for api domain
             const apiDomain: string = process.env.NEXT_PUBLIC_API_DOMAIN!;
             const res: Response = await fetch(`${apiDomain}/posts`, {    
+            //const res: Response = await fetch(`/api/blog/create-post`, {    
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -59,6 +61,10 @@ export default function CreatePost() {
             const apiRes: Response = await res.json();
             console.log(apiRes);
 
+            if (res.status == 401) {
+                console.log('Unauthorized');
+                return;
+            }
             // no error => redirect to blog
             router.push('/blog');
         }
