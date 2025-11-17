@@ -37,7 +37,8 @@ export default function Login() {
                 body: JSON.stringify({
                     username: data.username,
                     password: data.password
-                })
+                }),
+                credentials: 'include'
             });
 
             // evaluate login attempt response

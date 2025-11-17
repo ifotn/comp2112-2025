@@ -28,6 +28,8 @@ export default function CreatePost() {
     // access global username to automatically set it for new blog post
     const { username } = useCounter();
 
+    
+
     // form input handling.  register: for binding form inputs
     const { register, handleSubmit, formState: { errors, isSubmitSuccessful }} = useForm<PostFormData>();
 
@@ -76,6 +78,12 @@ export default function CreatePost() {
         catch (error: unknown) {
             console.log(error);
         }
+    }
+
+    // auth control => redirect to login if user is anonymous
+    if (!username) {
+        router.push('/auth/login');
+        //return;
     }
 
     return (
