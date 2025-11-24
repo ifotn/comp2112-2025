@@ -23,17 +23,28 @@ export default function Post() {
     const { username } = useCounter();
     const [canDelete, setCanDelete] = useState<boolean>(false);
     const router = useRouter();
+    const [loading, setLoading] = useState<boolean>(true);
 
     const getPost = async() => {
-        const res: Response = await fetch(`${apiDomain}/posts/${id}`);
-        const fetchedPost: Post = await res.json();
+        try {
+             const res: Response = await fetch(`${apiDomain}/posts/${id}`);
+            const fetchedPost: Post = await res.json();
 
-        // convert response json to a Post object
-        setPost(fetchedPost);
+            // convert response json to a Post object
+            setPost(fetchedPost);
 
-        // if user logged in, did they make this post?
-        if (username == fetchedPost.author) {
-            setCanDelete(true);
+            // if user logged in, did they make this post?
+            if (username == fetchedPost.author) {
+                setCanDelete(true);
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }  
+        finally {
+            // this runs at the end of the attempt, regardless of the result
+            // done with api fetch attempt, no longer loading so can hide that message
+            setLoading(false);  
         }
     }
     
@@ -55,6 +66,13 @@ export default function Post() {
                 console.log(await res.json());
             }
         }
+    }
+
+    // loading message until fetch attempt completed
+    if (loading) {
+        return (
+            <h1>Loading...</h1>
+        )
     }
 
     // not found error handler
