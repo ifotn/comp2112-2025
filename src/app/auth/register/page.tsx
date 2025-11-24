@@ -9,12 +9,33 @@ interface RegisterFormData {
   confirm: string;
 }
 
+const getPasswordStrength = (password: string) => {
+  const checks = {
+    length: password.length >= 8,
+    lowercase: /[a-z]/.test(password),
+    uppercase: /[A-Z]/.test(password),
+    digit: /\d/.test(password),
+    special: /[^A-Za-z0-9]/.test(password)
+  };
+
+  const passed = Object.values(checks).filter(Boolean).length;
+
+  let label = 'Weak';
+  if (passed >= 3) label = 'Medium';
+  if (passed == 5) label = 'Strong';
+  return { label, passed, checks };
+}
+
 export default function Register() {
   const {
     register,
-    handleSubmit,
+    handleSubmit, watch, 
     formState: { errors, isSubmitSuccessful },
   } = useForm<RegisterFormData>();
+
+  // password strength check
+  const password = watch('password') || '';
+  const { label, checks } = getPasswordStrength(password);
 
   const onSubmit = async (data: RegisterFormData) => {
     if (data.password != data.confirm) {
@@ -65,20 +86,37 @@ export default function Register() {
             <span className="error">{errors.username.message}</span>
           )}
         </fieldset>
-        <fieldset>
+        <fieldset className="password-fieldset">
           <label>Password:</label>
-          <input type="password"
-            {...register("password", { 
-              required: "Password is required",
-              minLength: {
-                value: 8,
-                message: "Min 8 characters"
-              }
-            })}
-          />
-          {errors.password && (
-            <span className="error">{errors.password.message}</span>
-          )}
+          <div className="password-row">
+            <div className="flex-1">
+              <input type="text"
+                  {...register("password", { 
+                    required: "Password is required",
+                    minLength: {
+                      value: 8,
+                      message: "Min 8 characters"
+                    },
+                    pattern: {
+                      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/,
+                      message: "Min 8 chars, 1 upper, 1 lower, 1 digit, 1 character"
+                    }
+                  })}
+                />
+                {errors.password && (
+                  <span className="error">{errors.password.message}</span>
+                )}
+                <div className="strength-bar">
+                  <div className={` strength-fill ${
+                    label === 'Weak' ? "strength-weak" 
+                    : label === 'Medium' ? "strength-medium"
+                    : "strength-strong"
+                  }`} >
+                </div>
+            </div>
+            <p className="strength-label">Strength: {label}</p>
+          </div>
+          </div>
         </fieldset>
         <fieldset>
           <label>Confirm Password:</label>
