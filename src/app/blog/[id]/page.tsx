@@ -1,5 +1,9 @@
+'use client';
 import PageTitle from "@/app/components/PageTitle";
 import { Parser } from "html-to-react";
+import { useCounter } from "@/app/context/GlobalContext";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 
 type Post = {
     title: string;
@@ -10,23 +14,28 @@ type Post = {
 }
 
 // display all content of selected Blog Post
-export default async function Post({ params }: { params: { id: string }}) {
-    const { id } = await params;
-
-    // fetch selected blog post from external API
-    //const res: Response = await fetch(`https://vercel-blog-api-eta.vercel.app/api/v1/posts/${id}`);
-
-    // use env var for api domain
+export default function Post() {
+    // class vars
+    const params = useParams<{ id: string }>();
+    const { id } = params;
     const apiDomain: string = process.env.NEXT_PUBLIC_API_DOMAIN!;
-    const res: Response = await fetch(`${apiDomain}/posts/${id}`);
+    const [post, setPost] = useState<Post | null>(null);
 
-    // convert response json to a Post object
-    const post: Post = await res.json();
+    const getPost = async() => {
+        const res: Response = await fetch(`${apiDomain}/posts/${id}`);
+
+        // convert response json to a Post object
+        setPost(await res.json());
+    }
+    
+    useEffect(() => {
+        getPost();
+    },[id]);  // run this any time the value of id changes
 
     //console.log(res);
 
     // not found error handler
-    if (!res.ok) {
+    if (!post) {
         return (
             <h1>Post Not Found</h1>
         );
@@ -36,10 +45,10 @@ export default async function Post({ params }: { params: { id: string }}) {
     return (
         <main>
             <PageTitle title="Blog Post" />
-            <h1>{post.title}</h1>
-            <h2>By {post.author} on {new Date(post.date).toLocaleDateString()}</h2>
+            <h1>{post!.title}</h1>
+            <h2>By {post!.author} on {new Date(post!.date).toLocaleDateString()}</h2>
             <article>
-                {Parser().parse(post.content)}
+                {Parser().parse(post!.content)}
             </article>
         </main>
     );
