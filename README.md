@@ -22,3 +22,5 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 Live site at https://comp2112-2025-dusky.vercel.app/
 
+React shell patched Dec 6, 2025
+
